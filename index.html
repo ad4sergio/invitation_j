@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Para Jhetsyn 🌸</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Poppins:wght@300;400;500&display=swap');
+
+    :root {
+      --negro: #0a0a0a;
+      --fucsia: #ff2d95;
+      --fucsia-suave: #ff6bb5;
+      --blanco: #f8f0f5;
+      --rosa-claro: #ffe0ef;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      background-color: var(--negro);
+      color: var(--blanco);
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    }
+
+    /* Flores de fondo */
+    .flor-fondo {
+      position: fixed;
+      font-size: 2rem;
+      opacity: 0.13;
+      pointer-events: none;
+      z-index: 0;
+      animation: flotar 9s ease-in-out infinite;
+      user-select: none;
+    }
+
+    @keyframes flotar {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-16px) rotate(6deg); }
+    }
+
+    .container {
+      width: 100%;
+      max-width: 420px;
+      padding: 20px 18px 40px;
+      z-index: 1;
+      position: relative;
+    }
+
+    .pantalla {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      min-height: 70dvh;
+      justify-content: center;
+      animation: aparecer 0.55s ease;
+    }
+
+    .pantalla.activa {
+      display: flex;
+    }
+
+    @keyframes aparecer {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .flor-decor {
+      font-size: 2.6rem;
+      margin-bottom: 16px;
+      animation: pulso 2.6s ease-in-out infinite;
+      user-select: none;
+    }
+
+    @keyframes pulso {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.07); }
+    }
+
+    h1, h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 600;
+      line-height: 1.35;
+      margin-bottom: 14px;
+      color: var(--blanco);
+      letter-spacing: 0.01em;
+    }
+
+    h1 { font-size: clamp(1.45rem, 5.5vw, 1.75rem); }
+    h2 { font-size: clamp(1.25rem, 4.8vw, 1.5rem); }
+
+    p {
+      font-size: clamp(0.98rem, 3.8vw, 1.08rem);
+      line-height: 1.65;
+      color: var(--rosa-claro);
+      margin-bottom: 28px;
+      font-weight: 300;
+      max-width: 340px;
+    }
+
+    .botones {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+      min-height: 64px;
+      width: 100%;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 15px 34px;
+      border: none;
+      border-radius: 50px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+      position: relative;
+      min-width: 110px;
+      min-height: 50px;
+      touch-action: manipulation;
+      user-select: none;
+    }
+
+    .btn-si {
+      background: var(--fucsia);
+      color: #fff;
+      box-shadow: 0 4px 18px rgba(255, 45, 149, 0.45);
+    }
+
+    .btn-si:active {
+      background: var(--fucsia-suave);
+      transform: scale(0.97);
+    }
+
+    .btn-no {
+      background: transparent;
+      color: #888;
+      border: 1.5px solid #555;
+    }
+
+    .btn-continuar {
+      background: var(--fucsia);
+      color: #fff;
+      box-shadow: 0 4px 18px rgba(255, 45, 149, 0.45);
+      padding: 15px 42px;
+      min-width: 160px;
+    }
+
+    .btn-continuar:active {
+      background: var(--fucsia-suave);
+      transform: scale(0.97);
+    }
+
+    /* Audio */
+    .audio-box {
+      width: 100%;
+      margin: 12px 0 28px;
+      background: rgba(255, 45, 149, 0.09);
+      border: 1px solid rgba(255, 45, 149, 0.28);
+      border-radius: 16px;
+      padding: 16px 14px;
+    }
+
+    audio {
+      width: 100%;
+      border-radius: 10px;
+      height: 44px;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.88);
+      z-index: 200;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+
+    .modal.activo {
+      display: flex;
+    }
+
+    .modal-contenido {
+      background: #14080f;
+      border: 1.5px solid var(--fucsia);
+      border-radius: 22px;
+      padding: 36px 26px;
+      text-align: center;
+      max-width: 310px;
+      width: 100%;
+      animation: aparecer 0.35s ease;
+    }
+
+    .modal-contenido p {
+      font-size: 1.15rem;
+      margin-bottom: 22px;
+      color: var(--blanco);
+      line-height: 1.5;
+    }
+
+    /* Final */
+    .final-texto {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.8rem, 7vw, 2.2rem);
+      color: var(--fucsia);
+      margin: 12px 0 8px;
+    }
+
+    .final-sub {
+      font-size: clamp(1.2rem, 4.5vw, 1.4rem);
+      color: var(--rosa-claro);
+      margin-bottom: 28px;
+    }
+
+    .flores-final {
+      font-size: 2.3rem;
+      letter-spacing: 10px;
+      margin-top: 16px;
+      animation: pulso 2.2s ease-in-out infinite;
+      user-select: none;
+    }
+
+    /* Barra de progreso */
+    .progreso {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: var(--fucsia);
+      width: 0%;
+      transition: width 0.45s ease;
+      z-index: 50;
+    }
+
+    /* Respuesta de la canción */
+    #respuesta-cancion {
+      margin-top: 22px;
+      font-size: 1.05rem;
+      color: var(--fucsia-suave);
+      min-height: 28px;
+    }
+
+    /* Ajustes extra para pantallas pequeñas */
+    @media (max-width: 360px) {
+      .btn {
+        padding: 13px 26px;
+        font-size: 0.98rem;
+        min-width: 100px;
+      }
+      .botones { gap: 12px; }
+      .container { padding: 16px 14px 36px; }
+    }
+
+    @media (max-height: 600px) {
+      .pantalla { min-height: auto; padding: 20px 0; }
+      .flor-decor { font-size: 2.1rem; margin-bottom: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Flores de fondo -->
+  <div class="flor-fondo" style="top:7%; left:5%;">🌸</div>
+  <div class="flor-fondo" style="top:16%; right:6%; animation-delay:1.4s;">🌺</div>
+  <div class="flor-fondo" style="top:42%; left:3%; animation-delay:2.8s;">🌷</div>
+  <div class="flor-fondo" style="top:62%; right:4%; animation-delay:1.9s;">🌸</div>
+  <div class="flor-fondo" style="bottom:14%; left:10%; animation-delay:3.5s;">🌼</div>
+  <div class="flor-fondo" style="bottom:28%; right:8%; animation-delay:0.7s;">🌺</div>
+
+  <div class="progreso" id="progreso"></div>
+
+  <div class="container">
+
+    <!-- 1. Bienvenida -->
+    <div class="pantalla activa" id="pantalla1">
+      <div class="flor-decor">🌸</div>
+      <h1>Hola Jhetsyn…</h1>
+      <p>¿Tendrás un poquito de paciencia?<br>Serán solo unos minutos, te lo prometo.</p>
+      <div class="botones">
+        <button class="btn btn-si" id="btnSi1">Sí</button>
+        <button class="btn btn-no" id="no1">No</button>
+      </div>
+    </div>
+
+    <!-- 2. Audio -->
+    <div class="pantalla" id="pantalla2">
+      <div class="flor-decor">🌸</div>
+      <h2>Escucha esto unos segundos...</h2>
+      <p>Cierra los ojos un momento…<br>Cuando reconozcas la canción, dale a “Ya escuché”.</p>
+      
+      <div class="audio-box">
+        <!-- 
+          Sube tu archivo de piano como "audio.mp3" en esta misma carpeta.
+          Si usas YouTube, comenta el <audio> y descomenta el iframe.
+        -->
+        <audio id="audioPlayer" controls controlsList="nodownload" playsinline preload="auto">
+          <source src="audio.mp3" type="audio/mpeg">
+          Tu navegador no soporta el audio.
+        </audio>
+
+        <!-- Opción YouTube (descomenta y pon el ID del video):
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;">
+          <iframe style="position:absolute;top:0;left:0;width:100%;height:100%;" 
+            src="https://www.youtube.com/embed/ID_DEL_VIDEO?rel=0" 
+            frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen></iframe>
+        </div>
+        -->
+      </div>
+
+      <button class="btn btn-continuar" id="btnYaEscuche">Ya escuché</button>
+    </div>
+
+    <!-- 3. ¿Has escuchado la canción? -->
+    <div class="pantalla" id="pantalla3">
+      <div class="flor-decor">🌸</div>
+      <h2>¿Habías escuchado esta canción antes?</h2>
+      <div class="botones">
+        <button class="btn btn-si" id="btnCancionSi">Sí</button>
+        <button class="btn btn-si" id="btnCancionNo">No</button>
+      </div>
+      <p id="respuesta-cancion"></p>
+    </div>
+
+    <!-- 4. ¿Te gusta el grupo? -->
+    <div class="pantalla" id="pantalla4">
+      <div class="flor-decor">🌸</div>
+      <h2>¿Te gusta Antología?</h2>
+      <div class="botones">
+        <button class="btn btn-si" id="btnGrupoSi">Sí</button>
+        <button class="btn btn-no" id="noGrupo">No</button>
+      </div>
+    </div>
+
+    <!-- 5. Momento personal -->
+    <div class="pantalla" id="pantalla5">
+      <div class="flor-decor">🌸</div>
+      <h2>¿Recuerdas?</h2>
+      <p>Fue tu cumple…<br>
+      No te llegué a entregar un regalo a tiempo.<br><br>
+      Espero que aceptes este detallito 🌸</p>
+      <button class="btn btn-continuar" id="btnContinuar">Continuar</button>
+    </div>
+
+    <!-- 6. Invitación final -->
+    <div class="pantalla" id="pantalla6">
+      <div class="flor-decor">🌸</div>
+      <h2>¿Quisieras ir conmigo a escucharlos<br>
+      y quizás bailar en vivo<br>
+      el <span style="color:var(--fucsia)">17 de octubre</span><br>
+      en el Antología Sinfónico?</h2>
+      <div class="botones" style="margin-top:8px;">
+        <button class="btn btn-si" id="btnFinalSi">Sí</button>
+        <button class="btn btn-no" id="noFinal">No</button>
+      </div>
+    </div>
+
+    <!-- 7. Gracias -->
+    <div class="pantalla" id="pantalla7">
+      <div class="flor-decor">🌸</div>
+      <div class="final-texto">¡Gracias por aceptar Jhet!</div>
+      <div class="final-sub">Te quiero</div>    
+      <div class="final-sub"> <br> Confirmado! </div>
+      <div class="flores-final">🌸 🌺 🌷 🌸</div>
+    </div>
+
+  </div>
+
+  <!-- Modal "yo sé que sí" -->
+  <div class="modal" id="modalNo">
+    <div class="modal-contenido">
+      <div style="font-size:2.3rem;margin-bottom:14px;">🌸</div>
+      <p>Yo sé que sí…<br>Piénsalo otra vez</p>
+      <button class="btn btn-continuar" id="btnCerrarModal">Volver</button>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const totalPasos = 7;
+
+      function actualizarProgreso(paso) {
+        const pct = ((paso - 1) / (totalPasos - 1)) * 100;
+        document.getElementById('progreso').style.width = pct + '%';
+      }
+
+      function irA(numero) {
+        document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('activa'));
+        const dest = document.getElementById('pantalla' + numero);
+        if (dest) {
+          dest.classList.add('activa');
+          actualizarProgreso(numero);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+
+      // --- Botones principales ---
+      document.getElementById('btnSi1').addEventListener('click', () => {
+        irA(2);
+        prepararAudio(); // salta al segundo 36 al llegar a la pantalla del audio
+      });
+      document.getElementById('btnYaEscuche').addEventListener('click', () => irA(3));
+      document.getElementById('btnGrupoSi').addEventListener('click', () => irA(5));
+      document.getElementById('btnContinuar').addEventListener('click', () => irA(6));
+      document.getElementById('btnFinalSi').addEventListener('click', () => irA(7));
+      document.getElementById('btnCerrarModal').addEventListener('click', () => {
+        document.getElementById('modalNo').classList.remove('activo');
+      });
+
+      // Audio empieza desde el segundo 36
+      function prepararAudio() {
+        const audio = document.getElementById('audioPlayer');
+        if (!audio) return;
+
+        const startTime = 36; // segundo exacto
+
+        function setStart() {
+          if (audio.readyState >= 1) {
+            audio.currentTime = startTime;
+          }
+        }
+
+        // Si ya está cargado
+        setStart();
+
+        // Por si todavía no terminó de cargar
+        audio.addEventListener('loadedmetadata', setStart, { once: true });
+        audio.addEventListener('canplay', setStart, { once: true });
+
+        // Cada vez que el usuario pause y vuelva a darle play, mantener el inicio
+        audio.addEventListener('play', function () {
+          if (audio.currentTime < startTime - 1) {
+            audio.currentTime = startTime;
+          }
+        });
+      }
+
+      // Respuesta canción
+      function respuestaCancion(esSi) {
+        const texto = document.getElementById('respuesta-cancion');
+        texto.textContent = esSi
+          ? '¡Me alegra que ya la conocieras! 🌸'
+          : 'Entonces es un descubrimientito especial de mi parte 🌸';
+        setTimeout(() => irA(4), 1700);
+      }
+      document.getElementById('btnCancionSi').addEventListener('click', () => respuestaCancion(true));
+      document.getElementById('btnCancionNo').addEventListener('click', () => respuestaCancion(false));
+
+      // Modal del grupo
+      document.getElementById('noGrupo').addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        document.getElementById('modalNo').classList.add('activo');
+      });
+
+      // --- Botones "No" que se escapan (mejorado para PC + móvil) ---
+      function hacerEscapista(id) {
+        const btn = document.getElementById(id);
+        if (!btn) return;
+
+        // Evitar que el botón sea "clickeable"
+        btn.style.cursor = 'default';
+        btn.setAttribute('tabindex', '-1');
+
+        let isMoving = false;
+
+        function mover() {
+          if (isMoving) return;
+          isMoving = true;
+
+          const parent = btn.parentElement;
+          const parentW = parent.offsetWidth;
+          const btnW = btn.offsetWidth;
+
+          // Movimiento más amplio y predecible
+          const maxX = Math.max(60, (parentW - btnW) / 2 - 8);
+          const maxY = 70;
+
+          const x = (Math.random() * 2 - 1) * maxX;
+          const y = (Math.random() * 2 - 1) * maxY;
+
+          btn.style.transition = 'transform 0.28s cubic-bezier(0.25, 0.8, 0.25, 1)';
+          btn.style.transform = `translate(${x}px, ${y}px)`;
+
+          // Permitir nuevo movimiento después de la animación
+          setTimeout(() => {
+            isMoving = false;
+          }, 300);
+        }
+
+        // === PC (mouse) ===
+        btn.addEventListener('mouseenter', mover);
+        btn.addEventListener('mousemove', function (e) {
+          // Solo mueve si el mouse está realmente encima
+          const rect = btn.getBoundingClientRect();
+          if (
+            e.clientX >= rect.left && e.clientX <= rect.right &&
+            e.clientY >= rect.top && e.clientY <= rect.bottom
+          ) {
+            mover();
+          }
+        });
+
+        // === Móvil (touch) ===
+        btn.addEventListener('touchstart', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          mover();
+        }, { passive: false });
+
+        // Bloquear cualquier intento de click/tap
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          mover();
+        });
+
+        btn.addEventListener('mousedown', function (e) {
+          e.preventDefault();
+          mover();
+        });
+      }
+
+      hacerEscapista('no1');
+      hacerEscapista('noFinal');
+
+      // Iniciar
+      actualizarProgreso(1);
+
+      // Prevenir zoom con doble tap en iOS
+      let lastTouchEnd = 0;
+      document.addEventListener('touchend', function (e) {
+        const now = Date.now();
+        if (now - lastTouchEnd <= 300) {
+          e.preventDefault();
+        }
+        lastTouchEnd = now;
+      }, { passive: false });
+    })();
+  </script>
+</body>
+</html>
